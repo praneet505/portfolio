@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import image1 from '../image1.jpg';
 const Icon = ({ name, size = 20, color = '#cbd5e1' }) => {
   const common = { width: size, height: size, fill: 'none', stroke: color, strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
   switch (name) {
@@ -85,60 +85,74 @@ const Icon = ({ name, size = 20, color = '#cbd5e1' }) => {
   }
 };
 
-const NavItem = ({ icon, label, active = false, onClick }) => (
-  <button
-    onClick={onClick}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 14,
-      width: '100%',
-      padding: '12px 14px',
-      border: 'none',
-      background: 'transparent',
-      color: active ? '#e2e8f0' : '#94a3b8',
-      borderRadius: 10,
-      cursor: 'pointer',
-      textAlign: 'left',
-      outline: 'none',
-      transition: 'background 0.2s ease, color 0.2s ease',
-      backgroundColor: active ? 'rgba(59,130,246,0.15)' : 'transparent'
-    }}
-  >
-    <span style={{ display: 'flex', width: 24, justifyContent: 'center' }}>
-      <Icon name={icon} color={active ? '#60a5fa' : '#64748b'} />
-    </span>
-    <span style={{ fontSize: 16, fontWeight: 500 }}>{label}</span>
-  </button>
-);
+const NavItem = ({ icon, label, active = false, onClick }) => {
+  const [hovered, setHovered] = useState(false);
+  const isActive = active || hovered;
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 14,
+        width: '100%',
+        padding: '12px 14px',
+        border: 'none',
+        background: 'transparent',
+        color: isActive ? '#e2e8f0' : '#94a3b8',
+        borderRadius: 10,
+        cursor: 'pointer',
+        textAlign: 'left',
+        outline: 'none',
+        transition: 'background 0.2s ease, color 0.2s ease, transform 0.1s ease',
+        backgroundColor: isActive ? 'rgba(59,130,246,0.15)' : 'transparent',
+        transform: hovered ? 'translateX(2px)' : 'none'
+      }}
+    >
+      <span style={{ display: 'flex', width: 24, justifyContent: 'center' }}>
+        <Icon name={icon} color={isActive ? '#60a5fa' : '#64748b'} />
+      </span>
+      <span style={{ fontSize: 16, fontWeight: 500 }}>{label}</span>
+    </button>
+  );
+};
 
-const SocialButton = ({ icon, href, label }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noreferrer"
-    aria-label={label}
-    style={{
-      width: 44,
-      height: 44,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: '9999px',
-      backgroundColor: '#0f172a',
-      border: '1px solid #1f2937',
-      color: '#e2e8f0',
-      textDecoration: 'none',
-      transition: 'transform 0.15s ease, background 0.2s ease'
-    }}
-  >
-    <Icon name={icon} size={18} color="#e2e8f0" />
-  </a>
-);
+const SocialButton = ({ icon, href, label }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        width: 44,
+        height: 44,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '9999px',
+        backgroundColor: hovered ? '#111827' : '#0f172a',
+        border: '1px solid #1f2937',
+        color: '#e2e8f0',
+        textDecoration: 'none',
+        transform: hovered ? 'scale(1.05)' : 'scale(1)',
+        transition: 'transform 0.15s ease, background 0.2s ease'
+      }}
+    >
+      <Icon name={icon} size={18} color="#e2e8f0" />
+    </a>
+  );
+};
 
 const Drawer = ({
-  name = 'Praneet',
-  avatarUrl,
+  name = 'PRANEET J NAIK',
+  // Accept a string URL; fallback to local image
+  avatarUrl = './image.jpg',
   active = 'portfolio',
   onNavigate,
   footerLink = '#'
@@ -156,14 +170,19 @@ const Drawer = ({
     <aside
       style={{
         width: 320,
-        minHeight: '100vh',
+        flex: '0 0 320px',
+        height: '100vh',
+        position: 'sticky',
+        top: 0,
+        alignSelf: 'flex-start',
         backgroundColor: '#0b1220',
         borderRight: '1px solid #111827',
         padding: 24,
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
-        gap: 28
+        gap: 28,
+        overflowY: 'auto'
       }}
     >
       {/* Header / Profile */}
@@ -182,7 +201,7 @@ const Drawer = ({
           }}
         >
           {avatarUrl ? (
-            <img src={avatarUrl} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={image1} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <div
               style={{
@@ -205,11 +224,10 @@ const Drawer = ({
 
         {/* Social icons */}
         <div style={{ display: 'flex', gap: 14, marginTop: 4 }}>
-          <SocialButton icon="twitter" href="#" label="Twitter" />
-          <SocialButton icon="facebook" href="#" label="Facebook" />
-          <SocialButton icon="instagram" href="#" label="Instagram" />
-          <SocialButton icon="github" href="#" label="GitHub" />
-          <SocialButton icon="linkedin" href="#" label="LinkedIn" />
+          <SocialButton icon="instagram" href="https://www.instagram.com/__praneet03/" label="Instagram" />
+          <SocialButton icon="linkedin" href="https://www.linkedin.com/in/praneet j Naik" label="LinkedIn" />
+          <SocialButton icon="github" href="https://github.com/praneet505" label="GitHub" />
+          <SocialButton icon="facebook" href="https://www.facebook.com/Praneet j naik/" label="Facebook" />
         </div>
       </div>
 
@@ -226,7 +244,7 @@ const Drawer = ({
       {/* Footer */}
       <div style={{ marginTop: 'auto', textAlign: 'center', color: '#94a3b8', fontSize: 14 }}>
         <span>Designed by </span>
-        <a href={footerLink} style={{ color: '#60a5fa', textDecoration: 'none' }}>Praneeth</a>
+        <a href={footerLink} style={{ color: '#60a5fa', textDecoration: 'none' }}>PRANEET J NAIK</a>
       </div>
     </aside>
   );
